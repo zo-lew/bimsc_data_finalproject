@@ -17,7 +17,7 @@ loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' )
 // set up button click handlers
 const booleanButton = document.getElementById("booleanButton")
 const downloadButton = document.getElementById("downloadButton")
-booleanButton.onclick = boolean
+booleanButton.onclick = compute
 downloadButton.onclick = download
 
 // create a default material
@@ -107,7 +107,7 @@ function animate () {
 }
 
 // boolean button handler
-async function boolean () {
+async function compute () {
 
     // disable boolean button
     booleanButton.disabled = true

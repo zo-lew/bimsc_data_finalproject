@@ -17,16 +17,16 @@ count_slider.addEventListener('mouseup', onSliderChange, false)
 count_slider.addEventListener('touchend', onSliderChange, false)
 
 const loader = new Rhino3dmLoader()
-loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/' )
+loader.setLibraryPath('https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/')
 
 let rhino, definition, doc
-rhino3dm().then( async m => {
-    console.log( 'Loaded rhino3dm.' )
+rhino3dm().then(async m => {
+    console.log('Loaded rhino3dm.')
     rhino = m // global
 
     //RhinoCompute.url = getAuth( 'RHINO_COMPUTE_URL' ) // RhinoCompute server url. Use http://localhost:8081 if debugging locally.
     //RhinoCompute.apiKey = getAuth( 'RHINO_COMPUTE_KEY' )  // RhinoCompute server api key. Leave blank if debugging locally.
-    RhinoCompute.url =  'http://localhost:8081/' //if debugging locally.
+    RhinoCompute.url = 'http://localhost:8081/' //if debugging locally.
     // load a grasshopper file!
     const url = definitionName
     const res = await fetch(url)
@@ -60,19 +60,19 @@ async function compute() {
     // hide spinner
     document.getElementById('loader').style.display = 'none'
 
-    
-    //console.log(res.values)
+    for (let i = 0; i < res.values.length; i++) {
 
-    for ( let i = 0; i < res.values.length; i ++ ) {
-        console.log(res.values[i])
+        for (const [key, value] of Object.entries(res.values[i].InnerTree)) {
+            for (const d of value) {
 
+                const data = JSON.parse(d.data)
+                const rhinoObject = rhino.CommonObject.decode(data)
+                doc.objects().add(rhinoObject, null)
+
+            }
+        }
     }
 
-    const data = JSON.parse(res.values[0].InnerTree['{0;0}'][0].data)
-    const rhinoObject = rhino.CommonObject.decode(data)
-    doc.objects().add(rhinoObject, null)
-
-    //console.log(data)
 
     // clear objects from scene
     scene.traverse(child => {
@@ -81,27 +81,25 @@ async function compute() {
         }
     })
 
-    
+
     const buffer = new Uint8Array(doc.toByteArray()).buffer
-    loader.parse( buffer, function ( object ) 
-    {
-        
-        scene.add( object )
+    loader.parse(buffer, function (object) {
+
+        scene.add(object)
         // hide spinner
         document.getElementById('loader').style.display = 'none'
 
     })
-
-
-
-
 }
+
 
 function onSliderChange() {
     // show spinner
     document.getElementById('loader').style.display = 'block'
     compute()
 }
+
+
 
 
 // BOILERPLATE //
@@ -122,15 +120,15 @@ function init() {
     document.body.appendChild(renderer.domElement)
 
     // add some controls to orbit the camera
-    const controls = new OrbitControls(camera, renderer.domElement)
+    controls = new OrbitControls(camera, renderer.domElement)
 
     // add a directional light
-    const directionalLight = new THREE.DirectionalLight( 0xffffff )
+    const directionalLight = new THREE.DirectionalLight(0xffffff)
     directionalLight.intensity = 2
-    scene.add( directionalLight )
+    scene.add(directionalLight)
 
     const ambientLight = new THREE.AmbientLight()
-    scene.add( ambientLight )
+    scene.add(ambientLight)
 
     animate()
 }
