@@ -16,5 +16,5 @@ These examples introduce how to use RhinoCompute as a remote geometry calculatio
 
 ## Previous lectures
 
-- [Lecture 1](https://github.com/iaac-macad-s1/lecture1) 
-- [Lecture 2](https://github.com/iaac-macad-s1/lecture2)
+- [Lecture 1](https://github.com/dav-leon/bimsc21-datamgmt) 
+- [Lecture 2](https://github.com/dav-leon/bimsc21-datamgmt-2)

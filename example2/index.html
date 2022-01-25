@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html>
-	<head>
+    <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="data:;base64,=">
-		<title>S1 - Lecture 3 - Example 2</title>
-		<style>
-			body { 
-                margin: 0;
-                font-family: sans-serif;
-            }
+        <title>RhinoCompute: GH SubD Object</title>
+        <style>
+            body { margin: 0; font-family: Arial, Helvetica, sans-serif; }
+            input {width: 90%;}
+            #container {position: relative;}
+            #overlay {z-index: 1; width: 100%}
 
-            input { width: 80%; }
-
-			/* CSS for a spinning animation */ 
-			#loader {
+            #loader {
                 border: 5px solid #f3f3f3; /* Light grey */
                 border-top: 5px solid #3d3d3d; /* Grey */
                 border-radius: 50%;
@@ -24,26 +19,30 @@
                 position: absolute;
                 top: 50%;
                 left: 50%;
+                z-index: 2;
             }
 
             @keyframes spin {
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
             }
+        </style>
+    </head>
+    <body>
+        <div id="loader"></div> 
+        <div id="container">
+            <div id="overlay">
+                <div>
+                    <input type="range" id="count" name="count" min="1" max="50" value="10" step="1">
+                    <label for="count">Count</label>
+                </div>
+                <div>
+                    <input type="range" id="radius" name="radius" min="1" max="10" value="7" step="1">
+                    <label for="radius">Radius</label>
+                </div>
 
-		</style>
-	</head>
-	<body>
-        <div id="loader"></div>
-        <div>
-            <input type="range" id="count" name="count" min="2" max="20" value="5" step="1">
-            <label for="count">count</label>
+            </div>
         </div>
-        <div>
-            <input type="range" id="radius" name="radius" min="5" max="20" value="5" step="1">
-            <label for="radius">radius</label>
-        </div>
-        <button id="downloadButton" disabled>Download</button>
-        <script type="module" src="./script.js"></script>
-	</body>
+        <script type="module" src="script.js"></script>
+    </body>
 </html>

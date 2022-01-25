@@ -113,11 +113,11 @@ async function boolean () {
     booleanButton.disabled = true
 
     // local 
-    //RhinoCompute.url = 'http://localhost:8081/' // Rhino.Compute server url
+    RhinoCompute.url = 'http://localhost:8081/' // Rhino.Compute server url
 
     // remote
-    RhinoCompute.url = 'https://macad2021.compute.rhino3d.com/'
-    RhinoCompute.apiKey = getApiKey() // needed when calling a remote RhinoCompute server
+    //RhinoCompute.url = 'https://macad2021.compute.rhino3d.com/'
+
 
     // get meshes from rhino doc
     const meshes = []
