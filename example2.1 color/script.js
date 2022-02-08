@@ -1,7 +1,7 @@
 // Import libraries
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.126.0/build/three.module.js";
 import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.126.0/examples/jsm/controls/OrbitControls.js";
-import rhino3dm from "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.module.js";
+import rhino3dm from "https://cdn.jsdelivr.net/npm/rhino3dm@7.11.1/rhino3dm.module.js";
 import { RhinoCompute } from "https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js";
 import { Rhino3dmLoader } from "https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/loaders/3DMLoader.js";
 
@@ -58,13 +58,15 @@ async function compute() {
     trees
   );
 
-  console.log(res);
+
+  //console.log(res);
 
   doc = new rhino.File3dm();
 
   // hide spinner
   document.getElementById("loader").style.display = "none";
 
+  //decode grasshopper objects and put them into a rhino document
   for (let i = 0; i < res.values.length; i++) {
     for (const [key, value] of Object.entries(res.values[i].InnerTree)) {
       for (const d of value) {
@@ -75,6 +77,25 @@ async function compute() {
     }
   }
 
+
+
+  // go through the objects in the Rhino document
+
+  let objects = doc.objects();
+  for ( let i = 0; i < objects.count; i++ ) {
+  
+    const rhinoObject = objects.get( i );
+
+
+     // asign geometry userstrings to object attributes
+    if ( rhinoObject.geometry().userStringCount > 0 ) {
+      const g_userStrings = rhinoObject.geometry().getUserStrings()
+      rhinoObject.attributes().setUserString(g_userStrings[0][0], g_userStrings[0][1])
+      
+    }
+  }
+
+
   // clear objects from scene
   scene.traverse((child) => {
     if (!child.isLight) {
@@ -84,24 +105,19 @@ async function compute() {
 
   const buffer = new Uint8Array(doc.toByteArray()).buffer;
   loader.parse(buffer, function (object) {
-    // clear objects from scene
-    scene.traverse((child) => {
-      if (
-        child.userData.hasOwnProperty("objectType") &&
-        child.userData.objectType === "File3dm"
-      ) {
-        scene.remove(child);
-      }
-    });
 
-    ///////////////////////////////////////////////////////////////////////
+    // go through all objects, check for userstrings and assing colors
 
-    // color crvs
     object.traverse((child) => {
       if (child.isLine) {
+
         if (child.userData.attributes.geometry.userStringCount > 0) {
-          //console.log(child.userData.attributes.geometry.userStrings[0][1])
-          const col = child.userData.attributes.geometry.userStrings[0][1];
+          
+          //get color from userStrings
+          const colorData = child.userData.attributes.userStrings[0]
+          const col = colorData[1];
+
+          //convert color from userstring to THREE color and assign it
           const threeColor = new THREE.Color("rgb(" + col + ")");
           const mat = new THREE.LineBasicMaterial({ color: threeColor });
           child.material = mat;
@@ -113,9 +129,6 @@ async function compute() {
     // add object graph from rhino model to three.js scene
     scene.add(object);
 
-    // hide spinner and enable download button
-    showSpinner(false);
-    //downloadButton.disabled = false
   });
 }
 
@@ -125,8 +138,8 @@ function onSliderChange() {
   compute();
 }
 
-// BOILERPLATE //
 
+// THREE BOILERPLATE //
 let scene, camera, renderer, controls;
 
 function init() {
