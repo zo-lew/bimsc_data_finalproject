@@ -5,16 +5,28 @@ import rhino3dm from "https://cdn.jsdelivr.net/npm/rhino3dm@7.11.1/rhino3dm.modu
 import { RhinoCompute } from "https://cdn.jsdelivr.net/npm/compute-rhino3d@0.13.0-beta/compute.rhino3d.module.js";
 import { Rhino3dmLoader } from "https://cdn.jsdelivr.net/npm/three@0.124.0/examples/jsm/loaders/3DMLoader.js";
 
-const definitionName = "rnd_node.gh";
+const definitionName = "220210_Cocoon_V.1.gh";
 
 // Set up sliders
-const radius_slider = document.getElementById("radius");
-radius_slider.addEventListener("mouseup", onSliderChange, false);
-radius_slider.addEventListener("touchend", onSliderChange, false);
+const x_slider = document.getElementById("x");
+x_slider.addEventListener("mouseup", onSliderChange, false);
+x_slider.addEventListener("touchend", onSliderChange, false);
 
-const count_slider = document.getElementById("count");
-count_slider.addEventListener("mouseup", onSliderChange, false);
-count_slider.addEventListener("touchend", onSliderChange, false);
+const y_slider = document.getElementById("y");
+y_slider.addEventListener("mouseup", onSliderChange, false);
+y_slider.addEventListener("touchend", onSliderChange, false);
+
+const z_slider = document.getElementById("z");
+z_slider.addEventListener("mouseup", onSliderChange, false);
+z_slider.addEventListener("touchend", onSliderChange, false);
+
+const top_slider = document.getElementById("top");
+top_slider.addEventListener("mouseup", onSliderChange, false);
+top_slider.addEventListener("touchend", onSliderChange, false);
+
+const base_slider = document.getElementById("base");
+base_slider.addEventListener("mouseup", onSliderChange, false);
+base_slider.addEventListener("touchend", onSliderChange, false);
 
 const loader = new Rhino3dmLoader();
 loader.setLibraryPath("https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/");
@@ -42,16 +54,28 @@ rhino3dm().then(async (m) => {
 });
 
 async function compute() {
-  const param1 = new RhinoCompute.Grasshopper.DataTree("Radius");
-  param1.append([0], [radius_slider.valueAsNumber]);
+  const param1 = new RhinoCompute.Grasshopper.DataTree("X");
+  param1.append([0], [x_slider.valueAsNumber]);
 
-  const param2 = new RhinoCompute.Grasshopper.DataTree("Count");
-  param2.append([0], [count_slider.valueAsNumber]);
+  const param2 = new RhinoCompute.Grasshopper.DataTree("Y");
+  param2.append([0], [y_slider.valueAsNumber]);
+
+  const param3 = new RhinoCompute.Grasshopper.DataTree("Z");
+  param3.append([0], [z_slider.valueAsNumber]);
+
+  const param4 = new RhinoCompute.Grasshopper.DataTree("Top");
+  param4.append([0], [top_slider.valueAsNumber]);
+
+  const param5 = new RhinoCompute.Grasshopper.DataTree("Base");
+  param5.append([0], [base_slider.valueAsNumber]);
 
   // clear values
   const trees = [];
   trees.push(param1);
   trees.push(param2);
+  trees.push(param3);
+  trees.push(param4);
+  trees.push(param5);
 
   const res = await RhinoCompute.Grasshopper.evaluateDefinition(
     definition,
