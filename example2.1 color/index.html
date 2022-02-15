@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html>
+    <body style="background-color:#00F08C;"></body>
     <head>
         <meta charset="utf-8">
         <title>RhinoCompute: GH SubD Object</title>
         <style>
-            body { margin: 0; font-family: Arial, Helvetica, sans-serif; }
+            body { margin: 0; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif, Helvetica, sans-serif; color:rgb(255, 255, 255) }
             input {width: 90%;}
             #container {position: relative;}
             #overlay {z-index: 1; width: 100%}
 
             #loader {
-                border: 5px solid #f3f3f3; /* Light grey */
-                border-top: 5px solid #3d3d3d; /* Grey */
+                border: 5px solid #00F08C; /* Light grey */
+                border-top: 5px solid #FF63CE; /* Grey */
                 border-radius: 50%;
-                width: 40px;
-                height: 40px;
+                width: 20px;
+                height: 20px;
                 animation: spin 1s linear infinite;
                 position: absolute;
                 top: 50%;
@@ -34,23 +35,23 @@
             <div id="overlay">
                 <div>
                     <input type="range" id="x" name="x" min="1" max="50" value="21" step="1">
-                    <label for="x">x axis</label>
+                    <label for="x">bounding box - x axis</label>
                 </div>
                 <div>
                     <input type="range" id="y" name="y" min="1" max="50" value="18" step="1">
-                    <label for="y">y axis</label>
+                    <label for="y">bounding box - y axis</label>
                 </div>
                 <div>
                     <input type="range" id="z" name="z" min="1" max="50" value="19" step="1">
-                    <label for="z">z axis</label>
+                    <label for="z">bounding box - z axis</label>
                 </div>
                 <div>
                     <input type="range" id="top" name="top" min="1" max="50" value="10" step="1">
-                    <label for="top">top</label>
+                    <label for="top"> seed top PINK</label">
                 </div>
                 <div>
                     <input type="range" id="base" name="base" min="1" max="50" value="3" step="1">
-                    <label for="base">base</label>
+                    <label for="base"> seed base GREEN</label>
                 </div>
 
             </div>
